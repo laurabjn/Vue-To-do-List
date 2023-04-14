@@ -1,25 +1,30 @@
 <script>
 import TheTodoFormVue from '../components/TheTodoForm.vue';
 import TheTodoListVue from '../components/TheTodoList.vue';
+import TheCountTodoVue from '../components/TheCountTodo.vue';
 
 export default {
     name: 'App',
     components: {
         TheTodoFormVue, 
-        TheTodoListVue
+        TheTodoListVue,
+        TheCountTodoVue
     },
     data() {
         return {
-            todosList: []
+            todosList: [],
+            count: 0
         }
     },
     methods: {
         addToDoItem(newTodo) {
             this.todosList = [...this.todosList, newTodo]
+            this.count++
             console.log(this.todosList)
         },
         deleteTodo(id) {
             this.todosList = this.todosList.filter(todo => todo.id !== id)
+            this.count--
             console.log(this.todosList)
         },
         editTodo(id) {
@@ -41,10 +46,17 @@ export default {
                 @edit-todo-event="editTodo"
                 @delete-todo-event="deleteTodo" />
         </div>
+        <div class="count-to-do">
+            <p>There is actually : </p>
+            <TheCountTodoVue v-bind:countTodo="count"  />
+        </div>
     </div>
 </template>
 <style scoped>
     .to-do-form {
         margin-top: 30px
+    }
+    .count-to-do {
+        margin-top: 30px;
     }
 </style>

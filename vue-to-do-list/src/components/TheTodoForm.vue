@@ -23,10 +23,15 @@ export default {
                 completed: false
             }
             console.log(newTaskObject)
-            this.$emit("submit-task-event", newTaskObject);
-            this.name = ''
-            this.hours = 0
-            this.contributor = ''
+
+            if (newTaskObject.name != "" && newTaskObject.hours != 0 
+                && newTaskObject.hours > 0 && newTaskObject.contributor != "") {
+                this.$emit("submit-task-event", newTaskObject);
+                this.name = ''
+                this.hours = 0
+                this.contributor = ''
+            } 
+
         } 
     }
 }
@@ -59,6 +64,7 @@ export default {
     }
     .input-hours {
         margin-right: 10px;
+        width: 50px;
     }
     .select-contributors {
         margin-right: 10px;

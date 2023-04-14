@@ -3,6 +3,9 @@ import TheTodoItemVue from './TheTodoItem.vue';
 
 export default {
     name: "TodoList",
+    props: [
+        "todosList"
+    ],
     components: {
         TheTodoItemVue
     }
@@ -11,7 +14,7 @@ export default {
 <template>
     <div class="container">
         <ul class="todos-list">
-            <li class="todo" v-bind:key="todo.id" v-for="todo in todos">
+            <li class="todo" v-bind:key="todo.id" v-for="todo in todosList">
                 <TheTodoItemVue 
                     v-bind:todoItem="todo" 
                     @edit-todo-event="$emit('edit-todo-event', todo.id)"

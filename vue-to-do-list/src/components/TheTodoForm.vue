@@ -33,7 +33,7 @@ export default {
 </script>
 <template>
     <div>
-        <form @submit="SubmitTask">
+        <form class="form-to-do" @submit="SubmitTask">
             <input  type="text"
                     class="input-name"
                     v-model="name"
@@ -44,7 +44,7 @@ export default {
                     v-model="hours"
                     placeholder="0"
             />
-            <select name="contributors" id="contributor-select" v-model="contributor">
+            <select class="select-contributors" name="contributors" id="contributor-select" v-model="contributor">
                 <option value="">Contributor</option>
                 <option value="alice">Alice</option>
                 <option value="bob">Bob</option>
@@ -53,3 +53,19 @@ export default {
         </form>
     </div>
 </template>
+<style scoped>
+    .input-name {
+        margin-right: 10px;
+    }
+    .input-hours {
+        margin-right: 10px;
+    }
+    .select-contributors {
+        margin-right: 10px;
+        width: 100px;
+    }
+    .add-btn {
+        margin-right: 10px;
+        width: 70px;
+    }
+</style>

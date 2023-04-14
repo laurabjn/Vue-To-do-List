@@ -21,6 +21,10 @@ export default {
         deleteTodo(id) {
             this.todosList = this.todosList.filter(todo => todo.id !== id)
             console.log(this.todosList)
+        },
+        editTodo(id) {
+            this.todosList = this.todosList.filter(todo => todo.id !== id)
+            console.log(this.todosList)
         }
     }
 }
@@ -34,10 +38,13 @@ export default {
         <div class="to-dos-list">
             <TheTodoListVue 
                 v-bind:todoList="todosList"
+                @edit-todo-event="editTodo"
                 @delete-todo-event="deleteTodo" />
         </div>
     </div>
 </template>
 <style scoped>
-
+    .to-do-form {
+        margin-top: 30px
+    }
 </style>

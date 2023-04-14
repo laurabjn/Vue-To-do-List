@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <script>
 export default {
     name: "TodoItem",
@@ -17,7 +18,12 @@ export default {
             <p>{{ todoItem.contributor }} : {{ todoItem.name }} ({{ todoItem.hours }})</p>
         </div>
         <button class="done-btn" v-if="!todoItem.completed" @click="todoDone">Done</button>
-        <button class="edit-btn" v-if="!todoItem.completed" @click="editTodo">Edit</button>
+        <button 
+            class="edit-btn" 
+            v-if="!todoItem.completed" 
+            @click="$emit('edit-todo-event', todoItem.id)">
+            Edit
+        </button>
         <button 
             class="delete-btn" 
             v-if="!todoItem.completed" 

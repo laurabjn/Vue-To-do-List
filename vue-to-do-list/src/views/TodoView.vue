@@ -1,5 +1,5 @@
 <script>
-import TheTodoFormVue from '../components/TheTodoForm.vue';
+import TheTodoFormVue from '../components/TheToDoForm.vue';
 import TheTodoListVue from '../components/TheTodoList.vue';
 import TheCountTodoVue from '../components/TheCountTodo.vue';
 
@@ -13,23 +13,35 @@ export default {
     data() {
         return {
             todosList: [],
-            count: 0
+            count: 0,
+            countInProgress: 0,
+            countDone: 0
         }
     },
     methods: {
         addToDoItem(newTodo) {
-            this.todosList = [...this.todosList, newTodo]
+            //this.todosList = [...this.todosList, newTodo]
+            this.$set(this.todosList, newTodo.id, newTodo);
             this.count++
+            this.countInProgress++
             console.log(this.todosList)
         },
         deleteTodo(id) {
             this.todosList = this.todosList.filter(todo => todo.id !== id)
             this.count--
+            this.countInProgress--
             console.log(this.todosList)
         },
         editTodo(id) {
             this.todosList = this.todosList.filter(todo => todo.id !== id)
             console.log(this.todosList)
+        },
+        countDoneTodo() {
+            this.todosList.forEach(todo => {
+                if (todo.completed) {
+                    this.countDone++
+                }
+            });
         }
     }
 }
@@ -48,7 +60,7 @@ export default {
         </div>
         <div class="count-to-do">
             <p>There is actually : </p>
-            <TheCountTodoVue v-bind:countTodo="count"  />
+            <TheCountTodoVue v-bind:countTodo="count" />
         </div>
     </div>
 </template>

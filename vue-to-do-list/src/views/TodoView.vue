@@ -1,7 +1,7 @@
 <script>
-import TheTodoFormVue from '../components/TheToDoForm.vue';
 import TheTodoListVue from '../components/TheTodoList.vue';
 import TheCountTodoVue from '../components/TheCountTodo.vue';
+import TheTodoFormVue from '../components/TheTodoForm.vue';
 
 export default {
     name: 'App',
@@ -13,6 +13,12 @@ export default {
     data() {
         return {
             todosList: [],
+            editing: false,
+            todoEdit: {
+                name: '',
+                hours: 0,
+                contributor: ''
+            },
             count: 0,
             countInProgress: 0,
             countDone: 0
@@ -20,11 +26,21 @@ export default {
     },
     methods: {
         addToDoItem(newTodo) {
-            //this.todosList = [...this.todosList, newTodo]
-            this.$set(this.todosList, newTodo.id, newTodo);
-            this.count++
-            this.countInProgress++
-            console.log(this.todosList)
+            if (!this.editing) {
+                this.todosList = [...this.todosList, newTodo]
+                this.count++
+                this.countInProgress++
+                console.log(this.todosList)
+            } else {
+                this.todosList.forEach(todo => {
+                    if (todo.id == newTodo.id) {
+                        this.todo.name = newTodo.name
+                        this.todo.hours = newTodo.hours
+                        this.todo.contributor = newTodo.contributor
+                    }
+                });
+                console.log(this.todosList)
+            }
         },
         deleteTodo(id) {
             this.todosList = this.todosList.filter(todo => todo.id !== id)
@@ -32,16 +48,19 @@ export default {
             this.countInProgress--
             console.log(this.todosList)
         },
-        editTodo(id) {
-            this.todosList = this.todosList.filter(todo => todo.id !== id)
-            console.log(this.todosList)
-        },
-        countDoneTodo() {
+        edit(id) {
+            this.editing = true
             this.todosList.forEach(todo => {
-                if (todo.completed) {
-                    this.countDone++
+                if (todo.id == id) {
+                    this.todoEdit = todo
+                    console.log(this.todo)
                 }
             });
+            console.log(this.editing)
+        },
+        countDoneTodo() {
+            this.countDone++
+            this.countInProgress--
         }
     }
 }
@@ -50,17 +69,24 @@ export default {
     <div class="container">
         <h1 class="title"> My Todo List</h1>
         <div class="to-do-form">
-            <TheTodoFormVue @submit-task-event="addToDoItem" />
+            <TheTodoFormVue @submit-task-event="addToDoItem" v-bind:todoEdit="todoEdit" />
         </div>
         <div class="to-dos-list">
             <TheTodoListVue 
                 v-bind:todoList="todosList"
-                @edit-todo-event="editTodo"
+                @done-todo-event="countDoneTodo"
+                @edit-todo-event="edit"
                 @delete-todo-event="deleteTodo" />
         </div>
         <div class="count-to-do">
             <p>There is actually : </p>
-            <TheCountTodoVue v-bind:countTodo="count" />
+            <TheCountTodoVue v-bind:countTodo="count"/>
+            <div class="in-progress" v-if="todosList.length > 0">
+                <p>{{ countInProgress }} in progress task</p>
+            </div>
+            <div class="done" v-if="todosList.length > 0">
+                <p>{{ countDone }} task done</p>
+            </div>
         </div>
     </div>
 </template>
@@ -69,6 +95,6 @@ export default {
         margin-top: 30px
     }
     .count-to-do {
-        margin-top: 30px;
+        margin-top: 70px;
     }
 </style>

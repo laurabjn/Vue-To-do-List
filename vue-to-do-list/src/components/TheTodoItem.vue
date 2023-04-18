@@ -8,6 +8,7 @@ export default {
     methods: {
         todoDone() {
             this.todoItem.completed = !this.todoItem.completed
+            this.$emit("done-todo-event");
         }
     }
 }
@@ -15,7 +16,7 @@ export default {
 <template>
     <div class="container">
         <div v-bind:class="{ 'completed' : todoItem.completed }">
-            <p>{{ todoItem.contributor }} : {{ todoItem.name }} ({{ todoItem.hours }})</p>
+            <p>{{ todoItem.contributor }} : {{ todoItem.name }} ({{ todoItem.hours }} hours)</p>
         </div>
         <button class="done-btn" v-if="!todoItem.completed" @click="todoDone">Done</button>
         <button 

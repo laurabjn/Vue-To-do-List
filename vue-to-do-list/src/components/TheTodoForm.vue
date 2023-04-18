@@ -3,11 +3,12 @@ import {v4 as uuidv4} from 'uuid';
 
 export default {
     name: "TodoForm",
+    props: ["editing", "todoEdit"],
     data() {
         return {
-            name: '',
-            hours: 0,
-            contributor: ''
+            name: this.todoEdit.name,
+            hours: this.todoEdit.hours,
+            contributor: this.todoEdit.contributor
         }
     },
     methods: {
@@ -15,22 +16,41 @@ export default {
         SubmitTask(event) {
             event.preventDefault();
 
-            const newTaskObject = {
-                id: uuidv4(),
-                name: this.name,
-                hours: this.hours,
-                contributor: this.contributor,
-                completed: false
-            }
-            console.log(newTaskObject)
+            if (!this.editing) {
+                const newTaskObject = {
+                    id: uuidv4(),
+                    name: this.name,
+                    hours: this.hours,
+                    contributor: this.contributor,
+                    completed: false
+                }
+                console.log(newTaskObject)
 
-            if (newTaskObject.name != "" && newTaskObject.hours != 0 
-                && newTaskObject.hours > 0 && newTaskObject.contributor != "") {
-                this.$emit("submit-task-event", newTaskObject);
-                this.name = ''
-                this.hours = 0
-                this.contributor = ''
-            } 
+                if (newTaskObject.name != "" && newTaskObject.hours != 0 
+                    && newTaskObject.hours > 0 && newTaskObject.contributor != "") {
+                    this.$emit("submit-task-event", newTaskObject);
+                    this.name = ''
+                    this.hours = 0
+                    this.contributor = ''
+                } 
+            } else {
+                const taskEdit = {
+                    id: this.id,
+                    name: this.name,
+                    hours: this.hours,
+                    contributor: this.contributor,
+                    completed: false
+                }
+                console.log(taskEdit)
+
+                if (taskEdit.name != "" && taskEdit.hours != 0 
+                    && taskEdit.hours > 0 && taskEdit.contributor != "") {
+                    this.$emit("submit-task-event", taskEdit);
+                    this.name = ''
+                    this.hours = 0
+                    this.contributor = ''
+                } 
+            }
 
         } 
     }
@@ -54,7 +74,8 @@ export default {
                 <option value="alice">Alice</option>
                 <option value="bob">Bob</option>
             </select>
-            <button class="add-btn" type="submit">Add</button>
+            <button class="add-btn" type="submit" v-if="!editing">Add</button>
+            <button class="edit-btn" type="submit" v-if="editing">Edit</button>
         </form>
     </div>
 </template>

@@ -27,7 +27,6 @@ export default {
     },
     methods: {
         checkForm() {
-            console.log('check')
             if (this.name && this.hours && this.contributor) {
                 this.errors = []
                 return true
@@ -50,49 +49,46 @@ export default {
             if (!this.contributor) {
                 this.errors.push('Contributor required.')
             }
+
+            return false
         },
         //Add a new Task
         SubmitTask(event) {
             event.preventDefault();
 
-            this.checkForm()
+            if (this.checkForm()) {
+                if (!this.editing) {
+                    const newTaskObject = {
+                        id: uuidv4(),
+                        name: this.name,
+                        hours: this.hours,
+                        contributor: this.contributor,
+                        completed: false
+                    }
 
-            if (!this.editing) {
-                const newTaskObject = {
-                    id: uuidv4(),
-                    name: this.name,
-                    hours: this.hours,
-                    contributor: this.contributor,
-                    completed: false
-                }
-                console.log(newTaskObject)
-
-                if (newTaskObject.name != "" && newTaskObject.hours != 0 
-                    && newTaskObject.hours > 0 && newTaskObject.contributor != "") {
                     this.$emit("submit-task-event", newTaskObject);
                     this.name = ''
                     this.hours = 0
                     this.contributor = ''
-                } 
-            } else {
-                const taskEdit = {
-                    id: this.todoEdit.id,
-                    name: this.name,
-                    hours: this.hours,
-                    contributor: this.contributor,
-                    completed: false
+                } else {
+                    const taskEdit = {
+                        id: this.todoEdit.id,
+                        name: this.name,
+                        hours: this.hours,
+                        contributor: this.contributor,
+                        completed: false
+                    }
+                    console.log(taskEdit)
+
+                    if (taskEdit.name != "" && taskEdit.hours != 0 
+                        && taskEdit.hours > 0 && taskEdit.contributor != "") {
+                        this.$emit("submit-task-event", taskEdit);
+                        this.name = ''
+                        this.hours = 0
+                        this.contributor = ''
+                    } 
                 }
-                console.log(taskEdit)
-
-                if (taskEdit.name != "" && taskEdit.hours != 0 
-                    && taskEdit.hours > 0 && taskEdit.contributor != "") {
-                    this.$emit("submit-task-event", taskEdit);
-                    this.name = ''
-                    this.hours = 0
-                    this.contributor = ''
-                } 
             }
-
         } 
     }
 }

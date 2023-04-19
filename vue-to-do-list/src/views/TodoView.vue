@@ -17,7 +17,7 @@ export default {
             todoEdit: {
                 name: '',
                 hours: 0,
-                contributor: ''
+                contributor: '',
             },
             count: 0,
             countInProgress: 0,

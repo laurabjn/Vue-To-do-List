@@ -25,20 +25,24 @@ export default {
         }
     },
     methods: {
-        addToDoItem(newTodo) {
+        addOrEditToDoItem(newTodo) {
             if (!this.editing) {
                 this.todosList = [...this.todosList, newTodo]
                 this.count++
                 this.countInProgress++
                 console.log(this.todosList)
             } else {
+                console.log('editing')
                 this.todosList.forEach(todo => {
+                    console.log('todo', todo)
                     if (todo.id == newTodo.id) {
                         this.todo.name = newTodo.name
                         this.todo.hours = newTodo.hours
                         this.todo.contributor = newTodo.contributor
+                        console.log('todo', todo)
                     }
                 });
+                this.editing = false
                 console.log(this.todosList)
             }
         },
@@ -53,7 +57,7 @@ export default {
             this.todosList.forEach(todo => {
                 if (todo.id == id) {
                     this.todoEdit = todo
-                    console.log(this.todo)
+                    console.log("todo", todo)
                 }
             });
             console.log(this.editing)
@@ -69,7 +73,10 @@ export default {
     <div class="container">
         <h1 class="title"> My Todo List</h1>
         <div class="to-do-form">
-            <TheTodoFormVue @submit-task-event="addToDoItem" v-bind:todoEdit="todoEdit" />
+            <TheTodoFormVue 
+                @submit-task-event="addOrEditToDoItem" 
+                v-bind:todoEdit="todoEdit" 
+                v-bind:editing="editing" />
         </div>
         <div class="to-dos-list">
             <TheTodoListVue 

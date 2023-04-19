@@ -1,20 +1,61 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <script>
-import {v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
     name: "TodoForm",
-    props: ["editing", "todoEdit"],
+    props: [
+        "editing",
+        "todoEdit"
+    ],
     data() {
         return {
-            name: this.todoEdit.name,
-            hours: this.todoEdit.hours,
-            contributor: this.todoEdit.contributor
+            name: "",
+            hours: 0,
+            contributor: "",
+            errors: []
+        }
+    },
+    mounted() {
+        console.log(this.todoEdit)
+        if (this.editing) {
+            console.log(this.todoEdit)
+            this.name = this.todoEdit.name
+            this.hours = this.todoEdit.hours
+            this.contributor = this.todoEdit.contributor
         }
     },
     methods: {
+        checkForm() {
+            console.log('check')
+            if (this.name && this.hours && this.contributor) {
+                this.errors = []
+                return true
+            }
+
+            this.errors = []
+
+            if (!this.name) {
+                this.errors.push('Name required.')
+            }
+
+            if (!this.hours) {
+                this.errors.push('Hours required.')
+            }
+
+            if (this.hours > 0) {
+                this.errors.push('Hours must be grater than 0.')
+            }
+
+            if (!this.contributor) {
+                this.errors.push('Contributor required.')
+            }
+        },
         //Add a new Task
         SubmitTask(event) {
             event.preventDefault();
+
+            this.checkForm()
 
             if (!this.editing) {
                 const newTaskObject = {
@@ -35,7 +76,7 @@ export default {
                 } 
             } else {
                 const taskEdit = {
-                    id: this.id,
+                    id: this.todoEdit.id,
                     name: this.name,
                     hours: this.hours,
                     contributor: this.contributor,
@@ -59,6 +100,12 @@ export default {
 <template>
     <div>
         <form class="form-to-do" @submit="SubmitTask">
+            <p class="error" v-if="errors.length">
+                <b>Please correct the following error(s) : </b>
+                <ul>
+                    <li v-bind:key="error.id" v-for="error in errors">{{ error }}</li>
+                </ul>
+            </p>
             <input  type="text"
                     class="input-name"
                     v-model="name"
@@ -69,7 +116,11 @@ export default {
                     v-model="hours"
                     placeholder="0"
             />
-            <select class="select-contributors" name="contributors" id="contributor-select" v-model="contributor">
+            <select 
+                class="select-contributors" 
+                name="contributors" 
+                id="contributor-select" 
+                v-model="contributor">
                 <option value="">Contributor</option>
                 <option value="alice">Alice</option>
                 <option value="bob">Bob</option>
@@ -80,6 +131,9 @@ export default {
     </div>
 </template>
 <style scoped>
+    .error {
+        color: red;
+    }
     .input-name {
         margin-right: 10px;
     }

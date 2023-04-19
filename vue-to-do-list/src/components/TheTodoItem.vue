@@ -3,7 +3,8 @@
 export default {
     name: "TodoItem",
     props: [
-        "todoItem"
+        "todoItem",
+        "mode"
     ],
     methods: {
         todoDone() {
@@ -16,7 +17,7 @@ export default {
 <template>
     <div class="container">
         <div v-bind:class="{ 'completed' : todoItem.completed }">
-            <p>{{ todoItem.contributor }} : {{ todoItem.name }} ({{ todoItem.hours }} hours)</p>
+            <p>{{ todoItem.contributor }} : {{ todoItem.name }} ({{ todoItem.hours }} hour(s))</p>
         </div>
         <button class="done-btn" v-if="!todoItem.completed" @click="todoDone">Done</button>
         <button 

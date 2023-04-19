@@ -9,7 +9,7 @@ export default {
     methods: {
         todoDone() {
             this.todoItem.completed = !this.todoItem.completed
-            this.$emit("done-todo-event");
+            this.$emit("done-todo-event", this.todoItem.completed);
         }
     }
 }

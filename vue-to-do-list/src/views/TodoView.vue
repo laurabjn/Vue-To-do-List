@@ -62,9 +62,11 @@ export default {
             });
             console.log(this.editing)
         },
-        countDoneTodo() {
-            this.countDone++
-            this.countInProgress--
+        countDoneTodo(completed) {
+            if (completed) {
+                this.countDone++;
+                this.countInProgress--;
+            }
         }
     }
 }

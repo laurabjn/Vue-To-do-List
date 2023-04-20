@@ -17,6 +17,7 @@ export default {
             <li class="todo" v-bind:key="todo.id" v-for="todo in todoList">
                 <TheTodoItemVue 
                     v-bind:todoItem="todo" 
+                    @select-todo-event="$emit('select-todo-event', todo.id)"
                     @done-todo-event="$emit('done-todo-event', todo.completed)"
                     @edit-todo-event="$emit('edit-todo-event', todo.id)"
                     @delete-todo-event="$emit('delete-todo-event', todo.id)" />

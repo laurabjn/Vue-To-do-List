@@ -13,6 +13,7 @@ export default {
     data() {
         return {
             todosList: [],
+            todoSelectList: [],
             editing: false,
             todoEdit: {
                 name: '',
@@ -46,11 +47,29 @@ export default {
                 console.log(this.todosList)
             }
         },
+        selectTodo(id) {
+            this.todosList.forEach(todo => {
+                if (todo.id == id && this.todoSelectList.includes(id) == false) {
+                    console.log(this.todoSelectList)
+                    this.todoSelectList = [...this.todoSelectList, todo]
+                }
+            });
+        },
         deleteTodo(id) {
             this.todosList = this.todosList.filter(todo => todo.id !== id)
             this.count--
             this.countInProgress--
             console.log(this.todosList)
+        },
+        deleteTodoSelected() {
+            this.todoSelectList.forEach(todoSelect => {
+                this.todosList = this.todosList.filter(todo => todo.id !== todoSelect.id)
+                this.todoSelectList = []
+                if (this.count > 0) {
+                    this.count--
+                }
+                this.countInProgress--
+            });
         },
         edit(id) {
             this.editing = true
@@ -83,6 +102,7 @@ export default {
         <div class="to-dos-list">
             <TheTodoListVue 
                 v-bind:todoList="todosList"
+                @select-todo-event="selectTodo"
                 @done-todo-event="countDoneTodo"
                 @edit-todo-event="edit"
                 @delete-todo-event="deleteTodo" />
@@ -96,6 +116,9 @@ export default {
             <div class="done" v-if="todosList.length > 0">
                 <p>{{ countDone }} task done</p>
             </div>
+        </div>
+        <div>
+            <button @click="deleteTodoSelected">Delete todo selected</button>
         </div>
     </div>
 </template>

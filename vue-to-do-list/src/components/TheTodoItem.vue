@@ -16,8 +16,8 @@ export default {
 </script>
 <template>
     <div class="container">
-        <div v-bind:class="{ 'completed' : todoItem.completed }">
-            <p>{{ todoItem.contributor }} : {{ todoItem.name }} ({{ todoItem.hours }} hour(s))</p>
+        <div class="item" v-bind:class="{ 'completed' : todoItem.completed }" >
+            <p @click="$emit('select-todo-event', todoItem.id)">{{ todoItem.contributor }} : {{ todoItem.name }} ({{ todoItem.hours }} hour(s))</p>
         </div>
         <button class="done-btn" v-if="!todoItem.completed" @click="todoDone">Done</button>
         <button 
@@ -35,6 +35,16 @@ export default {
     </div>
 </template>
 <style scoped>
+    .item {
+        color: black;
+    }
+    .item :hover {
+        cursor: pointer;
+        background-color: lightgray;
+    }
+    .item ::after {
+        background-color: lightgray;
+    }
     .completed {
         text-decoration: line-through;
     }

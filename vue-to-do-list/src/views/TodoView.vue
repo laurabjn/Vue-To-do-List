@@ -31,52 +31,43 @@ export default {
                 this.todosList = [...this.todosList, newTodo]
                 this.count++
                 this.countInProgress++
-                console.log(this.todosList)
             } else {
-                console.log('editing')
                 this.todosList.forEach(todo => {
-                    console.log('todo', todo)
                     if (todo.id == newTodo.id) {
-                        this.todo.name = newTodo.name
-                        this.todo.hours = newTodo.hours
-                        this.todo.contributor = newTodo.contributor
-                        console.log('todo', todo)
+                        todo.name = newTodo.name
+                        todo.hours = newTodo.hours
+                        todo.contributor = newTodo.contributor
                     }
                 });
                 this.editing = false
-                console.log(this.todosList)
+                this.todoEdit = {}
             }
         },
         selectTodo(id) {
             this.todosList.forEach(todo => {
-                if (todo.id == id && this.todoSelectList.includes(id) == false) {
-                    console.log(this.todoSelectList)
-                    this.todoSelectList = [...this.todoSelectList, todo]
+                if (todo.id == id) {
+                    todo.isSelected = true
                 }
             });
+
         },
         deleteTodo(id) {
             this.todosList = this.todosList.filter(todo => todo.id !== id)
             this.count--
             this.countInProgress--
-            console.log(this.todosList)
         },
         deleteTodoSelected() {
-            this.todoSelectList.forEach(todoSelect => {
-                this.todosList = this.todosList.filter(todo => todo.id !== todoSelect.id)
-                this.todoSelectList = []
-                if (this.count > 0) {
-                    this.count--
-                }
-                this.countInProgress--
-            });
+            this.todosList = this.todosList.filter(todo => !todo.isSelected )
+            if (this.count > 0) {
+                this.count--
+            }
+            this.countInProgress--
         },
         edit(id) {
             this.editing = true
             this.todosList.forEach(todo => {
                 if (todo.id == id) {
                     this.todoEdit = todo
-                    console.log("todo", todo)
                 }
             });
             console.log(this.editing)

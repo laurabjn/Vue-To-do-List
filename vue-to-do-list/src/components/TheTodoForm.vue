@@ -16,9 +16,8 @@ export default {
             errors: []
         }
     },
-    mounted() {
-        console.log(this.todoEdit)
-        if (this.editing) {
+    watch: {
+        editing() {
             console.log(this.todoEdit)
             this.name = this.todoEdit.name
             this.hours = this.todoEdit.hours
@@ -63,7 +62,8 @@ export default {
                         name: this.name,
                         hours: this.hours,
                         contributor: this.contributor,
-                        completed: false
+                        completed: false,
+                        isSelected: false
                     }
 
                     this.$emit("submit-task-event", newTaskObject);
@@ -76,17 +76,14 @@ export default {
                         name: this.name,
                         hours: this.hours,
                         contributor: this.contributor,
-                        completed: false
+                        completed: false,
+                        isSelected: false
                     }
-                    console.log(taskEdit)
-
-                    if (taskEdit.name != "" && taskEdit.hours != 0 
-                        && taskEdit.hours > 0 && taskEdit.contributor != "") {
-                        this.$emit("submit-task-event", taskEdit);
-                        this.name = ''
-                        this.hours = 0
-                        this.contributor = ''
-                    } 
+                    
+                    this.$emit("submit-task-event", taskEdit);
+                    this.name = ''
+                    this.hours = 0
+                    this.contributor = ''
                 }
             }
         } 
@@ -110,6 +107,7 @@ export default {
             <input  type="number"
                     class="input-hours"
                     v-model="hours"
+                    min="1"
                     placeholder="0"
             />
             <select 
